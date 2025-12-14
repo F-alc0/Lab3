@@ -12,5 +12,6 @@ typedef struct {
 
 Vector* vector_create(size_t element_size);
 void vector_destroy(Vector *vec);
+size_t vector_size(const Vector *vec);
 
 #endif
