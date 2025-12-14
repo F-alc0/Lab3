@@ -23,5 +23,6 @@ void vector_push_front(Vector *vec, const void *element);
 void vector_insert(Vector *vec, size_t index, const void *element);
 void vector_pop_back(Vector *vec);
 void vector_pop_front(Vector *vec);
+void vector_erase(Vector *vec, size_t index);
 
 #endif
