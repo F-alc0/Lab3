@@ -26,4 +26,13 @@ typedef enum {
     KEY_HAS_CHUTE
 } SortKey;
 
+typedef struct {
+    Mode mode;
+    int N;                 // Для генерации
+    char *input_file;      // Для ввода
+    char *output_file;     // Для вывода
+    SortType sort_type;    // Тип сортировки
+    SortKey sort_key;      // По какому полю сортировать
+} Config;
+
 #endif
