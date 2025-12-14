@@ -17,5 +17,6 @@ void* vector_at(const Vector *vec, size_t index);
 void* vector_begin(const Vector *vec);
 void* vector_end(const Vector *vec);
 void* vector_next(const Vector *vec, void *current);
+void* vector_prev(const Vector *vec, void *current);
 
 #endif
