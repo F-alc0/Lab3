@@ -14,5 +14,6 @@ Vector* vector_create(size_t element_size);
 void vector_destroy(Vector *vec);
 size_t vector_size(const Vector *vec);
 void* vector_at(const Vector *vec, size_t index);
+void* vector_begin(const Vector *vec);
 
 #endif
