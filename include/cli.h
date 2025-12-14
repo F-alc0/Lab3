@@ -10,4 +10,9 @@ typedef enum {
     MODE_PRINT
 } Mode;
 
+typedef enum {
+    SORT_ASC,
+    SORT_DESC
+} SortType;
+
 #endif
