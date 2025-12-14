@@ -16,3 +16,23 @@ void print_building_help() {
     puts("  - Количество этажей (целое число)");
     puts("  - Средняя площадь квартиры (вещественное число)");
 }
+
+void print_building_csv(const Building *bld, FILE *out) {
+    const char *type_str;
+    switch (bld->type) {
+        case PANEL: type_str = "PANEL"; break;
+        case BRICK: type_str = "BRICK"; break;
+        case MONOLITH: type_str = "MONOLITH"; break;
+        default: type_str = "UNKNOWN";
+    }
+    fprintf(out, "%s,%s,%s,%d,%d,%d,%d,%d,%.2f\n",
+            bld->developer,
+            bld->district,
+            type_str,
+            bld->year,
+            bld->has_elevator,
+            bld->has_chute,
+            bld->apartments,
+            bld->floors,
+            bld->avg_area);
+}
