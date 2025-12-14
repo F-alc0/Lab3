@@ -15,4 +15,15 @@ typedef enum {
     SORT_DESC
 } SortType;
 
+typedef enum {
+    KEY_DEVELOPER,
+    KEY_DISTRICT,
+    KEY_YEAR,
+    KEY_APARTMENTS,
+    KEY_FLOORS,
+    KEY_AVG_AREA,
+    KEY_HAS_ELEVATOR,
+    KEY_HAS_CHUTE
+} SortKey;
+
 #endif
