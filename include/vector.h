@@ -26,5 +26,6 @@ void vector_pop_front(Vector *vec);
 void vector_erase(Vector *vec, size_t index);
 void vector_swap(Vector *vec, size_t i, size_t j);
 void vector_clear(Vector *vec);
+void vector_from_array(Vector *vec, const void *array, size_t count);
 
 #endif
