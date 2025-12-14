@@ -37,4 +37,5 @@ typedef struct {
 
 Config parse_args(int argc, char *argv[]);
 void print_help();
+void run_generate(int N, const char *output_file);
 #endif
