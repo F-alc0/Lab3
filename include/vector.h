@@ -10,6 +10,6 @@ typedef struct {
     size_t element_size;
 } Vector;
 
-
+Vector* vector_create(size_t element_size);
 
 #endif
