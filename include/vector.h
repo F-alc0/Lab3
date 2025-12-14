@@ -21,5 +21,6 @@ void* vector_prev(const Vector *vec, void *current);
 void vector_push_back(Vector *vec, const void *element);
 void vector_push_front(Vector *vec, const void *element);
 void vector_insert(Vector *vec, size_t index, const void *element);
+void vector_pop_back(Vector *vec);
 
 #endif
