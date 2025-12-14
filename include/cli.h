@@ -38,4 +38,5 @@ typedef struct {
 Config parse_args(int argc, char *argv[]);
 void print_help();
 void run_generate(int N, const char *output_file);
+void run_sort(const char *input_file, const char *output_file, SortType sort_type, SortKey sort_key);
 #endif
