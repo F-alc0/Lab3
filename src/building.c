@@ -69,7 +69,29 @@ int read_building_csv(Building *bld, FILE *in) {
     return 1;
 }
 void print_building_table_header(FILE *out) {
-    fprintf(out, "+----------------------+-----------------+-----------------+------+----------+-------------+-------------+--------+-----------+\n");
-    fprintf(out, "| Застройщик           | Микрорайон      | Тип дома        | Год  | Лифт     | Мусоропровод| Квартир     | Этажей | Ср.площадь|\n");
-    fprintf(out, "+----------------------+-----------------+-----------------+------+----------+-------------+-------------+--------+-----------+\n");
+    fprintf(out, "+----------------------+-----------------+-----------------+------+----------+-------------+-------------+--------+----------------+\n");
+    fprintf(out, "| Застройщик           | Микрорайон      | Тип дома        | Год  | Лифт     | Мусоропровод| Квартир     | Этажей | Средняя площадь|\n");
+    fprintf(out, "+----------------------+-----------------+-----------------+------+----------+-------------+-------------+--------+----------------+\n");
+}
+
+void print_building_table_row(const Building *bld, FILE *out) {
+    const char *type_str;
+    switch (bld->type) {
+        case PANEL: type_str = "Панельный"; break;
+        case BRICK: type_str = "Кирпичный"; break;
+        case MONOLITH: type_str = "Монолитный"; break;
+        default: type_str = "Неизвестно";
+    }
+    const char *elevator = bld->has_elevator ? "ДА" : "НЕТ";
+    const char *chute = bld->has_chute ? "ДА" : "НЕТ";
+    fprintf(out, "| %-20s | %-15s | %-15s | %4d | %-8s | %-11s | %11d | %6d | %14.2f |\n",
+            bld->developer,
+            bld->district,
+            type_str,
+            bld->year,
+            elevator,
+            chute,
+            bld->apartments,
+            bld->floors,
+            bld->avg_area);
 }
