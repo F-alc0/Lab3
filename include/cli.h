@@ -35,4 +35,6 @@ typedef struct {
     SortKey sort_key;      // По какому полю сортировать
 } Config;
 
+Config parse_args(int argc, char *argv[]);
+
 #endif
