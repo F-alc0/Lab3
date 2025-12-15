@@ -66,3 +66,27 @@ Config parse_args(int argc, char *argv[]) {
     }
     return cfg;
 }
+
+void print_help() {
+    puts("Лабораторная работа 3 (вариант 5)");
+    puts("Структура данных: Многоквартирный дом");
+    puts("Алгоритм сортировки: Расческой");
+    puts("Контейнер: Вектор");
+    puts("");
+    puts("Использование:");
+    puts("  lab3.exe --generate N [-o файл]    Генерация N записей о домах");
+    puts("  lab3.exe --sort [-i файл] [-o файл] [-t A|D] [-k поле]  Сортировка данных");
+    puts("  lab3.exe --print [-i файл] [-o файл]  Вывод данных в виде таблицы");
+    puts("");
+    puts("Флаги:");
+    puts("  -g, --generate N   Количество записей для генерации");
+    puts("  -s, --sort         Режим сортировки");
+    puts("  -p, --print        Режим вывода таблицы");
+    puts("  -i, --in=файл      Входной файл (по умолчанию: stdin)");
+    puts("  -o, --out=файл     Выходной файл (по умолчанию: stdout)");
+    puts("  -t, --type=тип     Тип сортировки (A - возрастание, D - убывание)");
+    puts("  -k, --key=поле     По какому полю сортировать (developer, district, year, apartments, floors, avg_area, elevator, chute)");
+    puts("  -h, --help         Показать эту справку");
+    puts("");
+    print_building_help();
+}
