@@ -44,3 +44,12 @@ void* vector_next(const Vector *vec, void *current) {
     }
     return next;
 }
+
+void* vector_prev(const Vector *vec, void *current) {
+    if (!vec || !current || current == vec->data) return NULL;
+    char *prev = (char*)current - vec->element_size;
+    if (prev < (char*)vec->data) {
+        return NULL;
+    }
+    return prev;
+}
