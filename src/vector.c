@@ -17,3 +17,7 @@ void vector_destroy(Vector *vec) {
     free(vec->data);
     free(vec);
 }
+
+size_t vector_size(const Vector *vec) {
+    return vec ? vec->size : 0;
+}
