@@ -122,3 +122,9 @@ void generate_random_building(Building *bld) {
     bld->floors = 2 + rand() % 30;
     bld->avg_area = 30.0 + (rand() % 100) / 2.0;
 }
+
+int compare_by_developer_asc(const void *a, const void *b) {
+    const Building *b1 = (const Building *)a;
+    const Building *b2 = (const Building *)b;
+    return strcmp(b1->developer, b2->developer);
+}
