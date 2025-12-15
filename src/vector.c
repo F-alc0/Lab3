@@ -12,3 +12,8 @@ Vector* vector_create(size_t element_size) {
     return vec;
 }
 
+void vector_destroy(Vector *vec) {
+    if (!vec) return;
+    free(vec->data);
+    free(vec);
+}
