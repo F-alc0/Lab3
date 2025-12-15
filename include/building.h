@@ -29,4 +29,22 @@ void print_building_table_row(const Building *bld, FILE *out);
 void print_building_table_footer(FILE *out);
 void generate_random_building(Building *bld);
 
+int compare_by_developer_asc(const void *a, const void *b);
+int compare_by_district_asc(const void *a, const void *b);
+int compare_by_year_asc(const void *a, const void *b);
+int compare_by_apartments_asc(const void *a, const void *b);
+int compare_by_floors_asc(const void *a, const void *b);
+int compare_by_avg_area_asc(const void *a, const void *b);
+int compare_by_has_elevator_asc(const void *a, const void *b);
+int compare_by_has_chute_asc(const void *a, const void *b);
+
+int compare_by_developer_desc(const void *a, const void *b);
+int compare_by_district_desc(const void *a, const void *b);
+int compare_by_year_desc(const void *a, const void *b);
+int compare_by_apartments_desc(const void *a, const void *b);
+int compare_by_floors_desc(const void *a, const void *b);
+int compare_by_avg_area_desc(const void *a, const void *b);
+int compare_by_has_elevator_desc(const void *a, const void *b);
+int compare_by_has_chute_desc(const void *a, const void *b);
+
 #endif
