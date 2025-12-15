@@ -21,3 +21,8 @@ void vector_destroy(Vector *vec) {
 size_t vector_size(const Vector *vec) {
     return vec ? vec->size : 0;
 }
+
+void* vector_at(const Vector *vec, size_t index) {
+    if (!vec || index >= vec->size) return NULL;
+    return (char*)vec->data + index * vec->element_size;
+}
