@@ -30,3 +30,8 @@ void* vector_at(const Vector *vec, size_t index) {
 void* vector_begin(const Vector *vec) {
     return vec ? vec->data : NULL;
 }
+
+void* vector_end(const Vector *vec) {
+    if (!vec || vec->size == 0) return NULL;
+    return (char*)vec->data + vec->size * vec->element_size;
+}
