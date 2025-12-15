@@ -141,3 +141,15 @@ void vector_clear(Vector *vec) {
     if (!vec) return;
     vec->size = 0;
 }
+
+void vector_from_array(Vector *vec, const void *array, size_t count) {
+    if (!vec || !array || count == 0) return;
+    vector_reserve(vec, count);
+    memcpy(vec->data, array, count * vec->element_size);
+    vec->size = count;
+}
+
+void vector_to_array(const Vector *vec, void *array) {
+    if (!vec || !array) return;
+    memcpy(array, vec->data, vec->size * vec->element_size);
+}
