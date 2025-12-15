@@ -90,3 +90,30 @@ void print_help() {
     puts("");
     print_building_help();
 }
+
+void run_generate(int N, const char *output_file) {
+    if (N <= 0) {
+        fprintf(stderr, "Ошибка: количество записей должно быть больше нуля\n");
+        return;
+    }
+    FILE *out = stdout;
+    if (output_file) {
+        out = fopen(output_file, "w");
+        if (!out) {
+            perror("Ошибка открытия файла для записи");
+            return;
+        }
+    }
+    srand(time(NULL));
+    Building bld;
+    for (int i = 0; i < N; i++) {
+        generate_random_building(&bld);
+        print_building_csv(&bld, out);
+    }
+    if (output_file) {
+        fclose(out);
+        printf("Сгенерировано %d записей. Данные сохранены в файл %s\n", N, output_file);
+    } else {
+        printf("Сгенерировано %d записей\n", N);
+    }
+}
