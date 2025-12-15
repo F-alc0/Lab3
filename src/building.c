@@ -128,3 +128,9 @@ int compare_by_developer_asc(const void *a, const void *b) {
     const Building *b2 = (const Building *)b;
     return strcmp(b1->developer, b2->developer);
 }
+
+int compare_by_floors_asc(const void *a, const void *b) {
+    const Building *b1 = (const Building *)a;
+    const Building *b2 = (const Building *)b;
+    return (b1->floors > b2->floors) - (b1->floors < b2->floors);
+}
