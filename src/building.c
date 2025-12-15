@@ -129,6 +129,24 @@ int compare_by_developer_asc(const void *a, const void *b) {
     return strcmp(b1->developer, b2->developer);
 }
 
+int compare_by_district_asc(const void *a, const void *b) {
+    const Building *b1 = (const Building *)a;
+    const Building *b2 = (const Building *)b;
+    return strcmp(b1->district, b2->district);
+}
+
+int compare_by_year_asc(const void *a, const void *b) {
+    const Building *b1 = (const Building *)a;
+    const Building *b2 = (const Building *)b;
+    return (b1->year > b2->year) - (b1->year < b2->year);
+}
+
+int compare_by_apartments_asc(const void *a, const void *b) {
+    const Building *b1 = (const Building *)a;
+    const Building *b2 = (const Building *)b;
+    return (b1->apartments > b2->apartments) - (b1->apartments < b2->apartments);
+}
+
 int compare_by_floors_asc(const void *a, const void *b) {
     const Building *b1 = (const Building *)a;
     const Building *b2 = (const Building *)b;
