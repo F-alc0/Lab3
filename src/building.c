@@ -95,3 +95,7 @@ void print_building_table_row(const Building *bld, FILE *out) {
             bld->floors,
             bld->avg_area);
 }
+
+void print_building_table_footer(FILE *out) {
+    fprintf(out, "+----------------------+-----------------+-----------------+------+----------+-------------+-------------+--------+----------------+\n");
+}
