@@ -101,3 +101,26 @@ void vector_insert(Vector *vec, size_t index, const void *element) {
     memcpy(dest, element, vec->element_size);
     vec->size++;
 }
+
+void vector_pop_back(Vector *vec) {
+    if (!vec || vec->size == 0) return;
+    vec->size--;
+}
+
+void vector_pop_front(Vector *vec) {
+    if (!vec || vec->size == 0) return;
+    memmove(vec->data,
+            (char*)vec->data + vec->element_size,
+            (vec->size - 1) * vec->element_size);
+    vec->size--;
+}
+
+void vector_erase(Vector *vec, size_t index) {
+    if (!vec || index >= vec->size) return;
+    if (index < vec->size - 1) {
+        memmove((char*)vec->data + index * vec->element_size,
+                (char*)vec->data + (index + 1) * vec->element_size,
+                (vec->size - index - 1) * vec->element_size);
+    }
+    vec->size--;
+}
