@@ -35,3 +35,12 @@ void* vector_end(const Vector *vec) {
     if (!vec || vec->size == 0) return NULL;
     return (char*)vec->data + vec->size * vec->element_size;
 }
+
+void* vector_next(const Vector *vec, void *current) {
+    if (!vec || !current) return NULL;
+    char *next = (char*)current + vec->element_size;
+    if (next >= (char*)vec->data + vec->size * vec->element_size) {
+        return NULL;
+    }
+    return next;
+}
