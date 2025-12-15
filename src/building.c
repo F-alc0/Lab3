@@ -99,3 +99,26 @@ void print_building_table_row(const Building *bld, FILE *out) {
 void print_building_table_footer(FILE *out) {
     fprintf(out, "+----------------------+-----------------+-----------------+------+----------+-------------+-------------+--------+----------------+\n");
 }
+
+void generate_random_building(Building *bld) {
+    const char *developers[] = {
+        "Rockstar Estates", "TerraGroup Villas", "Lucas Constructions",
+        "CD Project Heights", "City 17", "Larian Builders",
+        "Stoic Housing", "Bethesda (Just) Works", "EAchitect"
+    };
+    const char *districts[] = {
+        "Верхний Ярнам", "Район №9", "Кейнхёрст",
+        "Олачиль", "Анор Лондо", "Иритилл",
+        "Трущобы", "Сайсил", "Аркс"
+    };
+    BuildingType types[] = {PANEL, BRICK, MONOLITH};
+    strcpy(bld->developer, developers[rand() % 9]);
+    strcpy(bld->district, districts[rand() % 9]);
+    bld->type = types[rand() % 3];
+    bld->year = 1970 + rand() % 50;
+    bld->has_elevator = rand() % 2;
+    bld->has_chute = rand() % 2;
+    bld->apartments = 20 + rand() % 300;
+    bld->floors = 2 + rand() % 30;
+    bld->avg_area = 30.0 + (rand() % 100) / 2.0;
+}
