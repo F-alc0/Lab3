@@ -26,3 +26,7 @@ void* vector_at(const Vector *vec, size_t index) {
     if (!vec || index >= vec->size) return NULL;
     return (char*)vec->data + index * vec->element_size;
 }
+
+void* vector_begin(const Vector *vec) {
+    return vec ? vec->data : NULL;
+}
