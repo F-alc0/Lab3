@@ -53,3 +53,11 @@ void* vector_prev(const Vector *vec, void *current) {
     }
     return prev;
 }
+
+static void vector_reserve(Vector *vec, size_t new_capacity) {
+    if (!vec || new_capacity <= vec->capacity) return;
+    void *new_data = realloc(vec->data, new_capacity * vec->element_size);
+    if (!new_data) return;
+    vec->data = new_data;
+    vec->capacity = new_capacity;
+}
