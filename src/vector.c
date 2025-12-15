@@ -136,3 +136,8 @@ void vector_swap(Vector *vec, size_t i, size_t j) {
     memcpy(b, temp, vec->element_size);
     free(temp);
 }
+
+void vector_clear(Vector *vec) {
+    if (!vec) return;
+    vec->size = 0;
+}
