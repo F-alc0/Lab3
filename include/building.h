@@ -21,7 +21,7 @@ typedef struct {
     double avg_area;
 } Building;
 
-void print_building_help();
+void print_building_help(void);
 void print_building_csv(const Building *bld, FILE *out);
 int read_building_csv(Building *bld, FILE *in);
 void print_building_table_header(FILE *out);
