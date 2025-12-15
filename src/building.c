@@ -134,3 +134,9 @@ int compare_by_floors_asc(const void *a, const void *b) {
     const Building *b2 = (const Building *)b;
     return (b1->floors > b2->floors) - (b1->floors < b2->floors);
 }
+
+int compare_by_avg_area_asc(const void *a, const void *b) {
+    const Building *b1 = (const Building *)a;
+    const Building *b2 = (const Building *)b;
+    return (b1->avg_area > b2->avg_area) - (b1->avg_area < b2->avg_area);
+}
