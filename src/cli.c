@@ -117,3 +117,89 @@ void run_generate(int N, const char *output_file) {
         printf("Сгенерировано %d записей\n", N);
     }
 }
+
+void run_sort(const char *input_file, const char *output_file, SortType sort_type, SortKey sort_key) {
+    FILE *in = stdin;
+    if (input_file) {
+        in = fopen(input_file, "r");
+        if (!in) {
+            perror("Ошибка открытия файла для чтения");
+            return;
+        }
+    }
+    Vector *vec = vector_create(sizeof(Building));
+    if (!vec) {
+        fprintf(stderr, "Ошибка создания вектора\n");
+        if (input_file) fclose(in);
+        return;
+    }
+    Building bld;
+    int count = 0;
+    while (read_building_csv(&bld, in)) {
+        vector_push_back(vec, &bld);
+        count++;
+    }
+    if (input_file) fclose(in);
+    printf("Прочитано %d записей\n", count);
+    if (count == 0) {
+        vector_destroy(vec);
+        return;
+    }
+    Comparator cmp = NULL;
+    switch (sort_key) {
+        case KEY_DEVELOPER:
+            cmp = (sort_type == SORT_ASC) ? compare_by_developer_asc : compare_by_developer_desc;
+            break;
+        case KEY_DISTRICT:
+            cmp = (sort_type == SORT_ASC) ? compare_by_district_asc : compare_by_district_desc;
+            break;
+        case KEY_YEAR:
+            cmp = (sort_type == SORT_ASC) ? compare_by_year_asc : compare_by_year_desc;
+            break;
+        case KEY_APARTMENTS:
+            cmp = (sort_type == SORT_ASC) ? compare_by_apartments_asc : compare_by_apartments_desc;
+            break;
+        case KEY_FLOORS:
+            cmp = (sort_type == SORT_ASC) ? compare_by_floors_asc : compare_by_floors_desc;
+            break;
+        case KEY_AVG_AREA:
+            cmp = (sort_type == SORT_ASC) ? compare_by_avg_area_asc : compare_by_avg_area_desc;
+            break;
+        case KEY_HAS_ELEVATOR:
+            cmp = (sort_type == SORT_ASC) ? compare_by_has_elevator_asc : compare_by_has_elevator_desc;
+            break;
+        case KEY_HAS_CHUTE:
+            cmp = (sort_type == SORT_ASC) ? compare_by_has_chute_asc : compare_by_has_chute_desc;
+            break;
+    }
+    if (cmp) {
+        comb_sort(vec, cmp);
+        printf("Данные отсортированы %s по полю %s\n",
+               (sort_type == SORT_ASC) ? "по возрастанию" : "по убыванию",
+               (sort_key == KEY_DEVELOPER) ? "застройщику" :
+               (sort_key == KEY_DISTRICT) ? "микрорайону" :
+               (sort_key == KEY_YEAR) ? "году постройки" :
+               (sort_key == KEY_APARTMENTS) ? "количеству квартир" :
+               (sort_key == KEY_FLOORS) ? "этажности" :
+               (sort_key == KEY_AVG_AREA) ? "средней площади" :
+               (sort_key == KEY_HAS_ELEVATOR) ? "наличию лифта" : "наличию мусоропровода");
+    }
+    FILE *out = stdout;
+    if (output_file) {
+        out = fopen(output_file, "w");
+        if (!out) {
+            perror("Ошибка открытия файла для записи");
+            vector_destroy(vec);
+            return;
+        }
+    }
+    for (size_t i = 0; i < vector_size(vec); i++) {
+        Building *b = (Building*)vector_at(vec, i);
+        print_building_csv(b, out);
+    }
+    if (output_file) {
+        fclose(out);
+        printf("Отсортированные данные сохранены в файл %s\n", output_file);
+    }
+    vector_destroy(vec);
+}
