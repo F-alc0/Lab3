@@ -152,3 +152,35 @@ int compare_by_has_chute_asc(const void *a, const void *b) {
     const Building *b2 = (const Building *)b;
     return (b1->has_chute > b2->has_chute) - (b1->has_chute < b2->has_chute);
 }
+
+int compare_by_developer_desc(const void *a, const void *b) {
+    return -compare_by_developer_asc(a, b);
+}
+
+int compare_by_district_desc(const void *a, const void *b) {
+    return -compare_by_district_asc(a, b);
+}
+
+int compare_by_year_desc(const void *a, const void *b) {
+    return -compare_by_year_asc(a, b);
+}
+
+int compare_by_apartments_desc(const void *a, const void *b) {
+    return -compare_by_apartments_asc(a, b);
+}
+
+int compare_by_floors_desc(const void *a, const void *b) {
+    return -compare_by_floors_asc(a, b);
+}
+
+int compare_by_avg_area_desc(const void *a, const void *b) {
+    return -compare_by_avg_area_asc(a, b);
+}
+
+int compare_by_has_elevator_desc(const void *a, const void *b) {
+    return -compare_by_has_elevator_asc(a, b);
+}
+
+int compare_by_has_chute_desc(const void *a, const void *b) {
+    return -compare_by_has_chute_asc(a, b);
+}
