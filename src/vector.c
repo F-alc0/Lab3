@@ -85,3 +85,19 @@ void vector_push_front(Vector *vec, const void *element) {
     memcpy(vec->data, element, vec->element_size);
     vec->size++;
 }
+
+void vector_insert(Vector *vec, size_t index, const void *element) {
+    if (!vec || !element || index > vec->size) return;
+    if (vec->size >= vec->capacity) {
+        size_t new_capacity = vec->capacity > 0 ? vec->capacity * 2 : 1;
+        vector_reserve(vec, new_capacity);
+    }
+    if (index < vec->size) {
+        memmove((char*)vec->data + (index + 1) * vec->element_size,
+                (char*)vec->data + index * vec->element_size,
+                (vec->size - index) * vec->element_size);
+    }
+    void *dest = (char*)vec->data + index * vec->element_size;
+    memcpy(dest, element, vec->element_size);
+    vec->size++;
+}
