@@ -203,3 +203,54 @@ void run_sort(const char *input_file, const char *output_file, SortType sort_typ
     }
     vector_destroy(vec);
 }
+
+void run_print(const char *input_file, const char *output_file) {
+    FILE *in = stdin;
+    if (input_file) {
+        in = fopen(input_file, "r");
+        if (!in) {
+            perror("Ошибка открытия файла для чтения");
+            return;
+        }
+    }
+    Vector *vec = vector_create(sizeof(Building));
+    if (!vec) {
+        fprintf(stderr, "Ошибка создания вектора\n");
+        if (input_file) fclose(in);
+        return;
+    }
+    Building bld;
+    int count = 0;
+    while (read_building_csv(&bld, in)) {
+        vector_push_back(vec, &bld);
+        count++;
+    }
+    if (input_file) fclose(in);
+    if (count == 0) {
+        fprintf(stderr, "Нет данных для вывода\n");
+        vector_destroy(vec);
+        return;
+    }
+    FILE *out = stdout;
+    if (output_file) {
+        out = fopen(output_file, "w");
+        if (!out) {
+            perror("Ошибка открытия файла для записи");
+            vector_destroy(vec);
+            return;
+        }
+    }
+    print_building_table_header(out);
+    for (size_t i = 0; i < vector_size(vec); i++) {
+        Building *b = (Building*)vector_at(vec, i);
+        print_building_table_row(b, out);
+    }
+    print_building_table_footer(out);
+    if (output_file) {
+        fclose(out);
+        printf("Таблица сохранена в файл %s\n", output_file);
+    } else {
+        printf("Всего записей: %d\n", count);
+    }
+    vector_destroy(vec);
+}
