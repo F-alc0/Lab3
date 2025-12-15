@@ -61,3 +61,14 @@ static void vector_reserve(Vector *vec, size_t new_capacity) {
     vec->data = new_data;
     vec->capacity = new_capacity;
 }
+
+void vector_push_back(Vector *vec, const void *element) {
+    if (!vec || !element) return;
+    if (vec->size >= vec->capacity) {
+        size_t new_capacity = vec->capacity > 0 ? vec->capacity * 2 : 1;
+        vector_reserve(vec, new_capacity);
+    }
+    void *dest = (char*)vec->data + vec->size * vec->element_size;
+    memcpy(dest, element, vec->element_size);
+    vec->size++;
+}
