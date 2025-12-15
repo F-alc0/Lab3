@@ -124,3 +124,15 @@ void vector_erase(Vector *vec, size_t index) {
     }
     vec->size--;
 }
+
+void vector_swap(Vector *vec, size_t i, size_t j) {
+    if (!vec || i >= vec->size || j >= vec->size || i == j) return;
+    void *temp = malloc(vec->element_size);
+    if (!temp) return;
+    void *a = (char*)vec->data + i * vec->element_size;
+    void *b = (char*)vec->data + j * vec->element_size;
+    memcpy(temp, a, vec->element_size);
+    memcpy(a, b, vec->element_size);
+    memcpy(b, temp, vec->element_size);
+    free(temp);
+}
