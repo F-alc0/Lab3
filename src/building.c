@@ -112,8 +112,8 @@ void generate_random_building(Building *bld) {
         "Трущобы", "Сайсил", "Аркс"
     };
     BuildingType types[] = {PANEL, BRICK, MONOLITH};
-    strcpy(bld->developer, developers[rand() % 9]);
-    strcpy(bld->district, districts[rand() % 9]);
+    strcpy_s(bld->developer, sizeof(bld->developer), developers[rand() % 9]);
+    strcpy_s(bld->district, sizeof(bld->district), districts[rand() % 9]);
     bld->type = types[rand() % 3];
     bld->year = 1970 + rand() % 50;
     bld->has_elevator = rand() % 2;
