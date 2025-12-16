@@ -86,7 +86,7 @@ void print_building_table_row(const Building *bld, FILE *out) {
     const char *chute = bld->has_chute ? "ДА" : "НЕТ";
 
     fprintf(out,
-            "| %-22s | %-18s | %-18s | %4d | %-10s | %-13s | %11d | %6d | %16.2f |\n",
+            "| %-20s | %-22s | %-18s | %4d | %-10s | %-13s | %11d | %6d | %16.2f |\n",
             bld->developer,
             bld->district,
             type_str,
