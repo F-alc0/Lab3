@@ -6,8 +6,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
 Config parse_args(int argc, char *argv[]) {
     Config cfg = {MODE_NONE, 0, NULL, NULL, SORT_ASC, KEY_DEVELOPER};
+
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0) {
             print_help();
@@ -63,10 +65,11 @@ Config parse_args(int argc, char *argv[]) {
             }
         }
     }
+
     return cfg;
 }
 
-void print_help() {
+void print_help(void) {
     puts("Лабораторная работа 3 (вариант 5)");
     puts("Структура данных: Многоквартирный дом");
     puts("Алгоритм сортировки: Расческой");
@@ -87,6 +90,7 @@ void print_help() {
     puts("  -k, --key=поле     По какому полю сортировать (developer, district, year, apartments, floors, avg_area, elevator, chute)");
     puts("  -h, --help         Показать эту справку");
     puts("");
+
     print_building_help();
 }
 
@@ -95,20 +99,24 @@ void run_generate(int N, const char *output_file) {
         fprintf(stderr, "Ошибка: количество записей должно быть больше нуля\n");
         return;
     }
+
     FILE *out = stdout;
     if (output_file) {
-        out = fopen(output_file, "w");
-        if (!out) {
+        errno_t err = fopen_s(&out, output_file, "w");
+        if (err != 0) {
             perror("Ошибка открытия файла для записи");
             return;
         }
     }
-    srand(time(NULL));
+
+    srand((unsigned int)time(NULL));
+
     Building bld;
     for (int i = 0; i < N; i++) {
         generate_random_building(&bld);
         print_building_csv(&bld, out);
     }
+
     if (output_file) {
         fclose(out);
         printf("Сгенерировано %d записей. Данные сохранены в файл %s\n", N, output_file);
@@ -120,30 +128,36 @@ void run_generate(int N, const char *output_file) {
 void run_sort(const char *input_file, const char *output_file, SortType sort_type, SortKey sort_key) {
     FILE *in = stdin;
     if (input_file) {
-        in = fopen(input_file, "r");
-        if (!in) {
+        errno_t err = fopen_s(&in, input_file, "r");
+        if (err != 0) {
             perror("Ошибка открытия файла для чтения");
             return;
         }
     }
+
     Vector *vec = vector_create(sizeof(Building));
     if (!vec) {
         fprintf(stderr, "Ошибка создания вектора\n");
         if (input_file) fclose(in);
         return;
     }
+
     Building bld;
     int count = 0;
     while (read_building_csv(&bld, in)) {
         vector_push_back(vec, &bld);
         count++;
     }
+
     if (input_file) fclose(in);
+
     printf("Прочитано %d записей\n", count);
+
     if (count == 0) {
         vector_destroy(vec);
         return;
     }
+
     Comparator cmp = NULL;
     switch (sort_key) {
         case KEY_DEVELOPER:
@@ -171,6 +185,7 @@ void run_sort(const char *input_file, const char *output_file, SortType sort_typ
             cmp = (sort_type == SORT_ASC) ? compare_by_has_chute_asc : compare_by_has_chute_desc;
             break;
     }
+
     if (cmp) {
         comb_sort(vec, cmp);
         printf("Данные отсортированы %s по полю %s\n",
@@ -183,73 +198,87 @@ void run_sort(const char *input_file, const char *output_file, SortType sort_typ
                (sort_key == KEY_AVG_AREA) ? "средней площади" :
                (sort_key == KEY_HAS_ELEVATOR) ? "наличию лифта" : "наличию мусоропровода");
     }
+
     FILE *out = stdout;
     if (output_file) {
-        out = fopen(output_file, "w");
-        if (!out) {
+        errno_t err = fopen_s(&out, output_file, "w");
+        if (err != 0) {
             perror("Ошибка открытия файла для записи");
             vector_destroy(vec);
             return;
         }
     }
+
     for (size_t i = 0; i < vector_size(vec); i++) {
         Building *b = (Building*)vector_at(vec, i);
         print_building_csv(b, out);
     }
+
     if (output_file) {
         fclose(out);
         printf("Отсортированные данные сохранены в файл %s\n", output_file);
     }
+
     vector_destroy(vec);
 }
 
 void run_print(const char *input_file, const char *output_file) {
     FILE *in = stdin;
     if (input_file) {
-        in = fopen(input_file, "r");
-        if (!in) {
+        errno_t err = fopen_s(&in, input_file, "r");
+        if (err != 0) {
             perror("Ошибка открытия файла для чтения");
             return;
         }
     }
+
     Vector *vec = vector_create(sizeof(Building));
     if (!vec) {
         fprintf(stderr, "Ошибка создания вектора\n");
         if (input_file) fclose(in);
         return;
     }
+
     Building bld;
     int count = 0;
     while (read_building_csv(&bld, in)) {
         vector_push_back(vec, &bld);
         count++;
     }
+
     if (input_file) fclose(in);
+
     if (count == 0) {
         fprintf(stderr, "Нет данных для вывода\n");
         vector_destroy(vec);
         return;
     }
+
     FILE *out = stdout;
     if (output_file) {
-        out = fopen(output_file, "w");
-        if (!out) {
+        errno_t err = fopen_s(&out, output_file, "w");
+        if (err != 0) {
             perror("Ошибка открытия файла для записи");
             vector_destroy(vec);
             return;
         }
     }
+
     print_building_table_header(out);
+
     for (size_t i = 0; i < vector_size(vec); i++) {
         Building *b = (Building*)vector_at(vec, i);
         print_building_table_row(b, out);
     }
+
     print_building_table_footer(out);
+
     if (output_file) {
         fclose(out);
         printf("Таблица сохранена в файл %s\n", output_file);
     } else {
         printf("Всего записей: %d\n", count);
     }
+
     vector_destroy(vec);
 }
