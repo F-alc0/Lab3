@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-void print_building_help() {
+void print_building_help(void) {
     puts("Структура данных: Многоквартирный дом");
     puts("Поля:");
     puts("  - Застройщик (строка)");
