@@ -4,7 +4,7 @@ project(lab3)
 
 set(CMAKE_C_STANDARD 99)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -D_CRT_SECURE_NO_WARNINGS")
 
 include_directories(include)
 
