@@ -84,7 +84,9 @@ void print_building_table_row(const Building *bld, FILE *out) {
     }
     const char *elevator = bld->has_elevator ? "ДА" : "НЕТ";
     const char *chute = bld->has_chute ? "ДА" : "НЕТ";
-    fprintf(out, "| %-20.20s | %-15.15s | %-15.15s | %4d | %-8.8s | %-11.11s | %11d | %6d | %14.2f |\n",
+
+    fprintf(out,
+            "| %-20.20s | %-15.15s | %-15.15s | %4d | %-8.8s | %-11.11s | %11d | %6d | %14.2f |\n",
             bld->developer,
             bld->district,
             type_str,
