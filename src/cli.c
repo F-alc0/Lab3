@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
 Config parse_args(int argc, char *argv[]) {
     Config cfg = {MODE_NONE, 0, NULL, NULL, SORT_ASC, KEY_DEVELOPER};
     for (int i = 1; i < argc; i++) {
