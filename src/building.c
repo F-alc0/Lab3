@@ -107,7 +107,7 @@ void generate_random_building(Building *bld) {
         "Rockstar Estates", "TerraGroup Villas", "Lucas Constructions",
         "CD Project Heights", "City 17", "Larian Builders",
         "Stoic Housing", "Bethesda Just Works", "EAchitect"
-    };
+    }; /*Вынести в константу*/
     const char *districts[] = {
         "Верхний Ярнам", "Район №9", "Кейнхёрст",
         "Олачиль", "Анор Лондо", "Иритилл",
