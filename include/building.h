@@ -13,11 +13,11 @@ typedef struct {
     char developer[100];
     char district[100];
     BuildingType type;
-    int year;
-    int has_elevator;
-    int has_chute;
-    int apartments;
-    int floors;
+    short year;
+    unsigned char has_elevator;
+    unsigned char has_chute;
+    short apartments;
+    unsigned char floors;
     double avg_area;
 } Building;
 
