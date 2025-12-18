@@ -1,4 +1,5 @@
 #include "cli.h"
+#include "benchmark.h"
 #include <stdio.h>
 #include <stdlib.h>
 
