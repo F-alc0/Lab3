@@ -1,5 +1,6 @@
 #include "benchmark.h"
 #include "building.h"
+#include "vector.h"
 #include "comb_sort.h"
 #include "quick_sort.h"
 
