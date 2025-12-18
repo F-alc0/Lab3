@@ -19,6 +19,9 @@ int main(int argc, char *argv[]) {
         case MODE_PRINT:
             run_print(cfg.input_file, cfg.output_file);
             break;
+        case MODE_BENCHMARK:
+            run_benchmark();
+            break;
         default:
             fprintf(stderr, "Ошибка: не указан режим работы\n");
             print_help();
