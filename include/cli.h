@@ -7,7 +7,8 @@ typedef enum {
     MODE_NONE,
     MODE_GENERATE,
     MODE_SORT,
-    MODE_PRINT
+    MODE_PRINT,
+    MODE_BENCHMARK
 } Mode;
 
 typedef enum {
