@@ -28,6 +28,9 @@ Config parse_args(int argc, char *argv[]) {
         else if (strcmp(argv[i], "--print") == 0 || strcmp(argv[i], "-p") == 0) {
             cfg.mode = MODE_PRINT;
         }
+        else if (strcmp(argv[i], "--benchmark") == 0) {
+            cfg.mode = MODE_BENCHMARK;
+        }
         else if (strcmp(argv[i], "--in") == 0 || strcmp(argv[i], "-i") == 0) {
             if (i + 1 < argc) {
                 cfg.input_file = argv[i + 1];
