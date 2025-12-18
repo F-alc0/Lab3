@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(lab3)
+project(lab3 C)
 
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -W0")
 
@@ -13,6 +14,8 @@ set(SOURCES
     src/building.c
     src/vector.c
     src/comb_sort.c
+    src/quick_sort.c
+    src/benchmark.c
     src/cli.c
 )
 
