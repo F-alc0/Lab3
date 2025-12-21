@@ -3,6 +3,36 @@
 
 #include <stdio.h>
 
+static const char *BUILDING_DEVELOPERS[] = {
+    "Rockstar Estates",
+    "TerraGroup Villas",
+    "Lucas Constructions",
+    "CD Project Heights",
+    "City 17",
+    "Larian Builders",
+    "Stoic Housing",
+    "Bethesda Just Works",
+    "EAchitect"
+};
+
+static const size_t BUILDING_DEVELOPERS_COUNT =
+    sizeof(BUILDING_DEVELOPERS) / sizeof(BUILDING_DEVELOPERS[0]);
+
+static const char *BUILDING_DISTRICTS[] = {
+    "Верхний Ярнам",
+    "Район №9",
+    "Кейнхёрст",
+    "Олачиль",
+    "Анор Лондо",
+    "Иритилл",
+    "Трущобы",
+    "Сайсил",
+    "Аркс"
+};
+
+static const size_t BUILDING_DISTRICTS_COUNT =
+    sizeof(BUILDING_DISTRICTS) / sizeof(BUILDING_DISTRICTS[0]);
+
 typedef enum {
     PANEL,
     BRICK,
