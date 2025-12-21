@@ -3,8 +3,10 @@
 
 #include "vector.h"
 
-typedef void (*SortFunction)(Vector *vec,
-    int (*cmp)(const void *, const void *));
+typedef void (*SortFunction)(
+    Vector *vec,
+    int (*cmp)(const void *, const void *)
+);
 
 typedef struct {
     int N;
@@ -12,9 +14,11 @@ typedef struct {
     double quick_time;
 } BenchmarkResult;
 
-double benchmark_sort(SortFunction sort_func,
+double benchmark_sort(
+    SortFunction sort_func,
     Vector *vec,
-    int (*cmp)(const void *, const void *));
+    int (*cmp)(const void *, const void *)
+);
 
 void run_benchmark(void);
 
