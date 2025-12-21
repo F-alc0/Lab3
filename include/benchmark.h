@@ -4,7 +4,7 @@
 #include "vector.h"
 
 typedef void (*SortFunction)(Vector *vec,
-                             int (*cmp)(const void *, const void *));
+    int (*cmp)(const void *, const void *));
 
 typedef struct {
     int N;
@@ -13,8 +13,8 @@ typedef struct {
 } BenchmarkResult;
 
 double benchmark_sort(SortFunction sort_func,
-                      Vector *vec,
-                      int (*cmp)(const void *, const void *));
+    Vector *vec,
+    int (*cmp)(const void *, const void *));
 
 void run_benchmark(void);
 

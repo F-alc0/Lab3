@@ -19,7 +19,18 @@ double benchmark_sort(SortFunction sort_func,
 }
 
 void run_benchmark(void) {
-    const int sizes[] = {100, 500, 1000, 5000, 10000};
+    const int sizes[] = {
+    100,
+    200,
+    500,
+    1000,
+    2000,
+    5000,
+    10000,
+    20000,
+    50000
+};
+
     const int count = sizeof(sizes) / sizeof(sizes[0]);
 
     srand((unsigned int)time(NULL));
