@@ -3,36 +3,6 @@
 
 #include <stdio.h>
 
-static const char *BUILDING_DEVELOPERS[] = {
-    "Rockstar Estates",
-    "TerraGroup Villas",
-    "Lucas Constructions",
-    "CD Project Heights",
-    "City 17",
-    "Larian Builders",
-    "Stoic Housing",
-    "Bethesda Just Works",
-    "EAchitect"
-};
-
-static const size_t BUILDING_DEVELOPERS_COUNT =
-    sizeof(BUILDING_DEVELOPERS) / sizeof(BUILDING_DEVELOPERS[0]);
-
-static const char *BUILDING_DISTRICTS[] = {
-    "Верхний Ярнам",
-    "Район №9",
-    "Кейнхёрст",
-    "Олачиль",
-    "Анор Лондо",
-    "Иритилл",
-    "Трущобы",
-    "Сайсил",
-    "Аркс"
-};
-
-static const size_t BUILDING_DISTRICTS_COUNT =
-    sizeof(BUILDING_DISTRICTS) / sizeof(BUILDING_DISTRICTS[0]);
-
 typedef enum {
     PANEL,
     BRICK,
@@ -51,12 +21,15 @@ typedef struct {
     double avg_area;
 } Building;
 
+extern const char *BUILDING_DEVELOPERS[];
+extern const unsigned int BUILDING_DEVELOPERS_COUNT;
+
+extern const char *BUILDING_DISTRICTS[];
+extern const unsigned int BUILDING_DISTRICTS_COUNT;
+
 void print_building_help(void);
 void print_building_csv(const Building *bld, FILE *out);
 int read_building_csv(Building *bld, FILE *in);
-void print_building_table_header(FILE *out);
-void print_building_table_row(const Building *bld, FILE *out);
-void print_building_table_footer(FILE *out);
 void generate_random_building(Building *bld);
 
 int compare_by_developer_asc(const void *a, const void *b);
