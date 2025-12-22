@@ -1,8 +1,19 @@
 #include "building_table.h"
 #include "building.h"
+#include "vector.h"
 
-#include <string.h>
+#include <stdio.h>
 #include <windows.h>
+
+#define COL_DEVELOPER   22
+#define COL_DISTRICT    20
+#define COL_TYPE        14
+#define COL_YEAR         6
+#define COL_FLOORS       8
+#define COL_APARTMENTS  22
+#define COL_ELEVATOR     6
+#define COL_CHUTE       14
+#define COL_AREA        10
 
 static void print_padded(FILE *out, const char *text, unsigned int width) {
     if (!out) return;
@@ -15,75 +26,74 @@ static void print_padded(FILE *out, const char *text, unsigned int width) {
         if ((*p & 0x80) == 0x00) {
             fputc(*p++, out);
         } else if ((*p & 0xE0) == 0xC0) {
-            fputc(*p++, out);
-            fputc(*p++, out);
+            fputc(*p++, out); fputc(*p++, out);
         } else if ((*p & 0xF0) == 0xE0) {
-            fputc(*p++, out);
-            fputc(*p++, out);
-            fputc(*p++, out);
+            fputc(*p++, out); fputc(*p++, out); fputc(*p++, out);
         } else if ((*p & 0xF8) == 0xF0) {
-            fputc(*p++, out);
-            fputc(*p++, out);
-            fputc(*p++, out);
-            fputc(*p++, out);
+            fputc(*p++, out); fputc(*p++, out);
+            fputc(*p++, out); fputc(*p++, out);
         } else {
             fputc(*p++, out);
         }
         printed++;
     }
 
-    while (printed++ < width) {
+    while (printed++ < width)
         fputc(' ', out);
-    }
 }
 
-void print_buildings_table(const Vector *vec, FILE *out) {
-    if (!vec || !out) return;
+void print_building_table_header(FILE *out) {
+    if (!out) return;
 
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 
-    const unsigned int dev   = 20;
-    const unsigned int dist  = 18;
-    const unsigned int type  = 10;
-    const unsigned int year  = 6;
-    const unsigned int floor = 7;
-    const unsigned int flats = 8;
-    const unsigned int elev  = 6;
-    const unsigned int chute = 6;
-    const unsigned int area  = 10;
+    print_padded(out, "Застройщик", COL_DEVELOPER);
+    print_padded(out, "Район", COL_DISTRICT);
+    print_padded(out, "Тип", COL_TYPE);
+    print_padded(out, "Год", COL_YEAR);
+    print_padded(out, "Этажи", COL_FLOORS);
+    print_padded(out, "Количество квартир", COL_APARTMENTS);
+    print_padded(out, "Лифт", COL_ELEVATOR);
+    print_padded(out, "Мусоропровод", COL_CHUTE);
+    fprintf(out, "%-*s\n", COL_AREA, "Площадь");
 
-    print_padded(out, "Застройщик", dev);
-    print_padded(out, "Район", dist);
-    print_padded(out, "Тип", type);
-    print_padded(out, "Год", year);
-    print_padded(out, "Этажи", floor);
-    print_padded(out, "Кв.", flats);
-    print_padded(out, "Лифт", elev);
-    print_padded(out, "Мус.", chute);
-    fprintf(out, "%-*s\n", (int)area, "Площадь");
+    int total =
+        COL_DEVELOPER + COL_DISTRICT + COL_TYPE + COL_YEAR +
+        COL_FLOORS + COL_APARTMENTS + COL_ELEVATOR +
+        COL_CHUTE + COL_AREA;
 
-    unsigned int total =
-        dev + dist + type + year + floor + flats + elev + chute + area;
-    for (unsigned int i = 0; i < total; i++) fputc('-', out);
+    for (int i = 0; i < total; i++) fputc('-', out);
     fputc('\n', out);
+}
 
-    for (size_t i = 0; i < vec->size; i++) {
-        const Building *b = vector_at((Vector *)vec, i);
+void print_building_table_row(const Building *b, FILE *out) {
+    if (!b || !out) return;
 
-        const char *type_str = "Неизв.";
-        if (b->type == PANEL) type_str = "Панель";
-        else if (b->type == BRICK) type_str = "Кирпич";
-        else if (b->type == MONOLITH) type_str = "Монолит";
+    const char *type_str = "Неизв.";
+    if (b->type == PANEL) type_str = "Панельный";
+    else if (b->type == BRICK) type_str = "Кирпичный";
+    else if (b->type == MONOLITH) type_str = "Монолитный";
 
-        print_padded(out, b->developer, dev);
-        print_padded(out, b->district, dist);
-        print_padded(out, type_str, type);
-        fprintf(out, "%-*d", (int)year, b->year);
-        fprintf(out, "%-*u", (int)floor, b->floors);
-        fprintf(out, "%-*d", (int)flats, b->apartments);
-        print_padded(out, b->has_elevator ? "ДА" : "НЕТ", elev);
-        print_padded(out, b->has_chute ? "ДА" : "НЕТ", chute);
-        fprintf(out, "%-*0.1f\n", (int)area, b->avg_area);
-    }
+    print_padded(out, b->developer, COL_DEVELOPER);
+    print_padded(out, b->district, COL_DISTRICT);
+    print_padded(out, type_str, COL_TYPE);
+    fprintf(out, "%-*d", COL_YEAR, b->year);
+    fprintf(out, "%-*u", COL_FLOORS, b->floors);
+    fprintf(out, "%-*d", COL_APARTMENTS, b->apartments);
+    print_padded(out, b->has_elevator ? "ДА" : "НЕТ", COL_ELEVATOR);
+    print_padded(out, b->has_chute ? "ДА" : "НЕТ", COL_CHUTE);
+    fprintf(out, "%-*0.1f\n", COL_AREA, b->avg_area);
+}
+
+void print_building_table_footer(FILE *out) {
+    if (!out) return;
+
+    int total =
+        COL_DEVELOPER + COL_DISTRICT + COL_TYPE + COL_YEAR +
+        COL_FLOORS + COL_APARTMENTS + COL_ELEVATOR +
+        COL_CHUTE + COL_AREA;
+
+    for (int i = 0; i < total; i++) fputc('-', out);
+    fputc('\n', out);
 }
