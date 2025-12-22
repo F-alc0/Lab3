@@ -20,14 +20,14 @@ const unsigned int BUILDING_DEVELOPERS_COUNT =
 
 const char *BUILDING_DISTRICTS[] = {
     "Верхний Ярнам",
-    "Район №9",
+    "Глубины Асина",
     "Кейнхёрст",
     "Олачиль",
     "Анор Лондо",
     "Иритилл",
     "Трущобы",
-    "Сайсил",
-    "Аркс"
+    "Болетария",
+    "Озёрная Лиурния"
 };
 
 const unsigned int BUILDING_DISTRICTS_COUNT =
