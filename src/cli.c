@@ -191,7 +191,7 @@ void run_sort(const char *input_file, const char *output_file, SortType sort_typ
 
     if (cmp) {
         comb_sort(vec, cmp);
-        printf("Данные отсортированы %s по полю %s\n",
+        printf("Данные отсортированы %s по %s\n",
                (sort_type == SORT_ASC) ? "по возрастанию" : "по убыванию",
                (sort_key == KEY_DEVELOPER) ? "застройщику" :
                (sort_key == KEY_DISTRICT) ? "микрорайону" :
