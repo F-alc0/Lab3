@@ -11,7 +11,7 @@
 
 #define PROBE_RUNS 5
 #define MIN_REPEATS 1
-#define MAX_REPEATS 1000
+#define MAX_REPEATS 10000
 #define REPEAT_CONST 1e-6
 
 
