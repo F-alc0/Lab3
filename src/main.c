@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
         run_print(cfg.input_file, cfg.output_file);
         break;
 
-    case MODE_BENCHMARK:          // ← ВОТ ОН
+    case MODE_BENCHMARK:
         run_benchmark();
         break;
 
