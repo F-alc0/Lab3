@@ -8,11 +8,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-double benchmark_sort(
-    SortFunction sort_func,
-    Vector *vec,
-    int (*cmp)(const void *, const void *)
-) {
+double benchmark_sort(SortFunction sort_func,
+                      Vector *vec,
+                      int (*cmp)(const void *, const void *)) {
     clock_t start = clock();
     sort_func(vec, cmp);
     clock_t end = clock();
@@ -23,30 +21,30 @@ double benchmark_sort(
 void run_benchmark(void) {
     const int sizes[] = {
         100,
-        200,
         500,
         1000,
-        2000,
         5000,
         10000,
         20000,
-        50000
+        50000,
+        100000,
+        200000,
+        500000,
+        1000000
     };
 
-    const int size_count = sizeof(sizes) / sizeof(sizes[0]);
-
-    const int REPEATS = 20;
+    const int count = sizeof(sizes) / sizeof(sizes[0]);
 
     srand((unsigned int)time(NULL));
 
     printf("N,comb_sort,quick_sort\n");
 
-    for (int i = 0; i < size_count; i++) {
+    for (int i = 0; i < count; i++) {
         int N = sizes[i];
 
         Building *data = malloc(sizeof(Building) * N);
         if (!data) {
-            fprintf(stderr, "Ошибка выделения памяти\n");
+            fprintf(stderr, "Ошибка выделения памяти для N=%d\n", N);
             return;
         }
 
@@ -57,34 +55,20 @@ void run_benchmark(void) {
         Vector *v_comb = vector_create(sizeof(Building));
         Vector *v_quick = vector_create(sizeof(Building));
 
-        if (!v_comb || !v_quick) {
-            fprintf(stderr, "Ошибка создания вектора\n");
-            free(data);
-            return;
-        }
+        vector_from_array(v_comb, data, N);
+        vector_from_array(v_quick, data, N);
 
-        double comb_time = 0.0;
-        double quick_time = 0.0;
+        double comb_time = benchmark_sort(
+            comb_sort,
+            v_comb,
+            compare_by_year_asc
+        );
 
-        for (int r = 0; r < REPEATS; r++) {
-            vector_from_array(v_comb, data, N);
-            vector_from_array(v_quick, data, N);
-
-            comb_time += benchmark_sort(
-                comb_sort,
-                v_comb,
-                compare_by_year_asc
-            );
-
-            quick_time += benchmark_sort(
-                quick_sort,
-                v_quick,
-                compare_by_year_asc
-            );
-        }
-
-        comb_time /= REPEATS;
-        quick_time /= REPEATS;
+        double quick_time = benchmark_sort(
+            quick_sort,
+            v_quick,
+            compare_by_year_asc
+        );
 
         printf("%d,%.6f,%.6f\n", N, comb_time, quick_time);
 
