@@ -23,6 +23,10 @@ int main(int argc, char *argv[]) {
         run_print(cfg.input_file, cfg.output_file);
         break;
 
+    case MODE_BENCHMARK:          // ← ВОТ ОН
+        run_benchmark();
+        break;
+
     case MODE_NONE:
     default:
         fprintf(stderr, "Ошибка: не указан режим работы\n");
@@ -30,4 +34,5 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    return 0;
 }
