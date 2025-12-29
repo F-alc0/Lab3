@@ -9,84 +9,92 @@
 #include <time.h>
 #include <math.h>
 
-#define PROBE_RUNS 5
-#define MIN_REPEATS 1
-#define MAX_REPEATS 10000
-#define REPEAT_CONST 1e-6
+/*
+ Методика:
+ - один эксперимент = одна сортировка
+ - σ считается по экспериментам
+ - увеличиваем число повторений, пока
+   3σ / <t> <= REL_ERROR
+*/
 
+#define MIN_REPEATS 30
+#define MAX_REPEATS 200
+#define REL_ERROR 0.05
 
 static double measure_once(
     SortFunction sort_func,
-    Vector *vec,
+    Building *data,
+    int n,
     int (*cmp)(const void *, const void *)
 ) {
+    Vector *v = vector_create(sizeof(Building));
+    vector_from_array(v, data, n);
+
     clock_t start = clock();
-    sort_func(vec, cmp);
+    sort_func(v, cmp);
     clock_t end = clock();
+
+    vector_destroy(v);
+
     return (double)(end - start) / CLOCKS_PER_SEC;
 }
 
-static double probe_time(
+static void benchmark_one(
     SortFunction sort_func,
     Building *data,
     int n,
-    int (*cmp)(const void *, const void *)
+    int (*cmp)(const void *, const void *),
+    double *mean,
+    double *sigma,
+    int *repeats_out
 ) {
-    double sum = 0.0;
+    int repeats = MIN_REPEATS;
+    double *times = NULL;
 
-    for (int i = 0; i < PROBE_RUNS; i++) {
-        Vector *v = vector_create(sizeof(Building));
-        vector_from_array(v, data, n);
+    while (1) {
+        times = realloc(times, repeats * sizeof(double));
 
-        sum += measure_once(sort_func, v, cmp);
-        vector_destroy(v);
+        double sum = 0.0;
+        for (int i = 0; i < repeats; i++) {
+            times[i] = measure_once(sort_func, data, n, cmp);
+            sum += times[i];
+        }
+
+        *mean = sum / repeats;
+
+        double var = 0.0;
+        for (int i = 0; i < repeats; i++) {
+            double d = times[i] - *mean;
+            var += d * d;
+        }
+        *sigma = sqrt(var / repeats);
+
+        if (*mean > 0 &&
+            3 * (*sigma) / (*mean) <= REL_ERROR)
+            break;
+
+        if (repeats >= MAX_REPEATS)
+            break;
+
+        repeats *= 2;
+        if (repeats > MAX_REPEATS)
+            repeats = MAX_REPEATS;
     }
 
-    return sum / PROBE_RUNS;
+    *repeats_out = repeats;
+    free(times);
 }
-
-static int compute_repeats(double t) {
-    if (t <= 0.0) return MAX_REPEATS;
-
-    int k = (int)ceil(REPEAT_CONST / (t * t));
-
-    if (k < MIN_REPEATS) k = MIN_REPEATS;
-    if (k > MAX_REPEATS) k = MAX_REPEATS;
-
-    return k;
-}
-
-
-static double benchmark_average(
-    SortFunction sort_func,
-    Building *data,
-    int n,
-    int repeats,
-    int (*cmp)(const void *, const void *)
-) {
-    double sum = 0.0;
-
-    for (int i = 0; i < repeats; i++) {
-        Vector *v = vector_create(sizeof(Building));
-        vector_from_array(v, data, n);
-
-        sum += measure_once(sort_func, v, cmp);
-        vector_destroy(v);
-    }
-
-    return sum / repeats;
-}
-
 
 void run_benchmark(void) {
     const int sizes[] = {
-        5, 10, 20, 50, 100, 200, 500
+        10, 20, 50, 100, 150, 200, 300, 500,
+        1000, 2000, 5000, 10000, 20000, 50000, 100000
     };
 
     const int count = sizeof(sizes) / sizeof(sizes[0]);
     srand((unsigned int)time(NULL));
 
-    printf("N,comb_sort,quick_sort,repeats\n");
+    printf("N,comb_t,comb_dt,quick_t,quick_dt,repeats\n");
 
     for (int i = 0; i < count; i++) {
         int N = sizes[i];
@@ -96,20 +104,30 @@ void run_benchmark(void) {
 
         for (int j = 0; j < N; j++)
             generate_random_building(&data[j]);
-        double t_probe = probe_time(
-            comb_sort, data, N, compare_by_year_asc
-        );
-        int repeats = compute_repeats(t_probe);
-        double comb_time = benchmark_average(
-            comb_sort, data, N, repeats, compare_by_year_asc
+
+        double comb_t, comb_sigma;
+        double quick_t, quick_sigma;
+        int repeats;
+
+        benchmark_one(
+            comb_sort, data, N,
+            compare_by_year_asc,
+            &comb_t, &comb_sigma, &repeats
         );
 
-        double quick_time = benchmark_average(
-            quick_sort, data, N, repeats, compare_by_year_asc
+        benchmark_one(
+            quick_sort, data, N,
+            compare_by_year_asc,
+            &quick_t, &quick_sigma, &repeats
         );
 
-        printf("%d,%.6f,%.6f,%d\n",
-               N, comb_time, quick_time, repeats);
+        printf(
+            "%d,%.8f,%.8f,%.8f,%.8f,%d\n",
+            N,
+            comb_t, 3 * comb_sigma,
+            quick_t, 3 * quick_sigma,
+            repeats
+        );
 
         free(data);
     }
